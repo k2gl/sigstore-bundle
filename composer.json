@@ -1,0 +1,62 @@
+{
+  "name": "k2gl/sigstore-bundle",
+  "description": "Build Sigstore bundles (.sigstore.json) in PHP — the counterpart to verification, emitting DSSE and message-signature bundles.",
+  "homepage": "https://github.com/k2gl/sigstore-bundle",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "sigstore",
+    "bundle",
+    "dsse",
+    "cosign",
+    "rekor",
+    "in-toto",
+    "attestation",
+    "provenance",
+    "supply-chain",
+    "signing"
+  ],
+  "authors": [
+    {
+      "name": "Nickolay Harin",
+      "email": "l0gic@ya.ru"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/k2gl/sigstore-bundle/issues",
+    "source": "https://github.com/k2gl/sigstore-bundle"
+  },
+  "require": {
+    "php": ">=8.1",
+    "ext-json": "*",
+    "k2gl/dsse": "^1.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10|^11|^12",
+    "phpstan/phpstan": "^2.1",
+    "laravel/pint": "~1.20.0",
+    "k2gl/phpunit-fluent-assertions": "^12"
+  },
+  "autoload": {
+    "psr-4": {
+      "K2gl\\SigstoreBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "K2gl\\SigstoreBundle\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable",
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "phpstan analyse",
+    "cs": "pint --test",
+    "cs-fix": "pint",
+    "check": [
+      "@test",
+      "@phpstan",
+      "@cs"
+    ]
+  }
+}
