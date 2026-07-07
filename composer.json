@@ -1,6 +1,6 @@
 {
   "name": "k2gl/sigstore-bundle",
-  "description": "Build Sigstore bundles (.sigstore.json) in PHP — the counterpart to verification, emitting DSSE and message-signature bundles.",
+  "description": "Build Sigstore bundles (.sigstore.json) in PHP — the counterpart to verification, emitting DSSE and message-signature bundles",
   "homepage": "https://github.com/k2gl/sigstore-bundle",
   "type": "library",
   "license": "MIT",
