@@ -88,74 +88,81 @@ final class BundleBuilderTest extends TestCase
 
     public function testRejectsMissingIdentity(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        BundleBuilder::forDsse($this->envelope())->addTransparencyLogEntry($this->entry())->build();
+        // act + assert
+        fact(fn () => BundleBuilder::forDsse($this->envelope())->addTransparencyLogEntry($this->entry())->build())
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsMissingTransparencyLog(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        BundleBuilder::forDsse($this->envelope())->withCertificate('leaf')->build();
+        // act + assert
+        fact(fn () => BundleBuilder::forDsse($this->envelope())->withCertificate('leaf')->build())
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsEmptyCertificate(): void
     {
-        $this->expectException(SigstoreBundleException::class);
-        SigningIdentity::certificate('');
+        // act + assert
+        fact(static fn () => SigningIdentity::certificate(''))->throws(SigstoreBundleException::class);
     }
 
     public function testRejectsEmptyPublicKeyHint(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        SigningIdentity::publicKey('');
+        // act + assert
+        fact(static fn () => SigningIdentity::publicKey(''))->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsEmptyChain(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        SigningIdentity::certificateChain([]);
+        // act + assert
+        fact(static fn () => SigningIdentity::certificateChain([]))->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsWrongDigestLength(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        new MessageSignature(HashAlgorithm::SHA2_256, 'too-short', 'sig');
+        // act + assert
+        fact(static fn () => new MessageSignature(HashAlgorithm::SHA2_256, 'too-short', 'sig'))
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsEmptySignature(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        new MessageSignature(HashAlgorithm::SHA2_256, str_repeat("\0", 32), '');
+        // act + assert
+        fact(static fn () => new MessageSignature(HashAlgorithm::SHA2_256, str_repeat("\0", 32), ''))
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsEmptyTimestampToken(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        BundleBuilder::forMessageSignature($this->messageSignature())->addRfc3161Timestamp('');
+        // act + assert
+        fact(fn () => BundleBuilder::forMessageSignature($this->messageSignature())->addRfc3161Timestamp(''))
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsEntryWithoutAnyProof(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        new TransparencyLogEntry(
+        // act + assert
+        fact(static fn () => new TransparencyLogEntry(
             logIndex: 1,
             logId: 'log',
             kind: 'hashedrekord',
             version: '0.0.1',
             canonicalizedBody: 'body',
-        );
+        ))->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsInclusionProofTreeSizeNotAfterIndex(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        new InclusionProof(logIndex: 5, rootHash: 'root', treeSize: 5, hashes: [], checkpoint: 'cp');
+        // act + assert
+        fact(static fn () => new InclusionProof(logIndex: 5, rootHash: 'root', treeSize: 5, hashes: [], checkpoint: 'cp'))
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testRejectsInclusionProofWithoutCheckpoint(): void
     {
-        $this->expectException(InvalidBundleInputException::class);
-        new InclusionProof(logIndex: 1, rootHash: 'root', treeSize: 2, hashes: [], checkpoint: '');
+        // act + assert
+        fact(static fn () => new InclusionProof(logIndex: 1, rootHash: 'root', treeSize: 2, hashes: [], checkpoint: ''))
+            ->throws(InvalidBundleInputException::class);
     }
 
     public function testDigestLengthPerAlgorithm(): void
