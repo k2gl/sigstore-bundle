@@ -39,9 +39,9 @@ final class BundleBuilderTest extends TestCase
 
         $array = $bundle->toArray();
         fact($array['mediaType'])->is(Bundle::MEDIA_TYPE);
-        fact(isset($array['dsseEnvelope']))->true();
+        fact($array)->arrayHasKey('dsseEnvelope');
         fact($array['verificationMaterial']['certificate']['rawBytes'])->is(base64_encode('leaf-der'));
-        fact(count($array['verificationMaterial']['tlogEntries']))->is(1);
+        fact($array['verificationMaterial']['tlogEntries'])->count(1);
     }
 
     public function testBuildsMessageSignatureBundleWithCertificateChain(): void
@@ -51,8 +51,8 @@ final class BundleBuilderTest extends TestCase
             ->addTransparencyLogEntry($this->entry())
             ->toArray();
 
-        fact(isset($array['messageSignature']))->true();
-        fact(count($array['verificationMaterial']['x509CertificateChain']['certificates']))->is(3);
+        fact($array)->arrayHasKey('messageSignature');
+        fact($array['verificationMaterial']['x509CertificateChain']['certificates'])->count(3);
     }
 
     public function testBuildsPublicKeyBundleWithTimestamp(): void
@@ -83,7 +83,7 @@ final class BundleBuilderTest extends TestCase
         $array = $entry->toArray();
         fact($array['integratedTime'])->is('1710869186');
         fact($array['inclusionPromise']['signedEntryTimestamp'])->is(base64_encode('set-bytes'));
-        fact(isset($array['inclusionProof']))->false();
+        fact($array)->arrayNotHasKey('inclusionProof');
     }
 
     public function testRejectsMissingIdentity(): void
